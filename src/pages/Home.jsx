@@ -12,15 +12,29 @@ const Home = ({ showToast }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    // 1. 컴포넌트 마운트 시 로컬 스토리지에서 캐시된 데이터를 먼저 불러옵니다. (SWR 패턴)
+    const cachedData = localStorage.getItem('hardware_items_cache');
+    if (cachedData) {
+      try {
+        setItems(JSON.parse(cachedData));
+        setLoading(false); // 캐시가 있으면 일단 로딩 해제 (글부터 보여줌)
+      } catch (e) {
+        console.error("캐시 파싱 오류", e);
+      }
+    }
     fetchItems();
   }, []);
 
   const fetchItems = async () => {
     try {
-      setLoading(true);
+      // 캐시가 없는 경우에만 전체 화면 로딩을 보여줍니다.
+      if (items.length === 0) setLoading(true);
+      
       const data = await getItems();
       if (data && data.items) {
         setItems(data.items);
+        // 새로운 데이터를 로컬 스토리지에 저장합니다.
+        localStorage.setItem('hardware_items_cache', JSON.stringify(data.items));
       } else {
         setItems([]);
       }
@@ -78,7 +92,19 @@ const Home = ({ showToast }) => {
       {loading ? (
         <div className="grid">
           {[1, 2, 3].map(i => (
-            <div key={i} className="card skeleton" style={{ height: '380px' }}></div>
+            <div key={i} className="card">
+              <div className="card-image-wrap skeleton"></div>
+              <div className="card-content">
+                <div className="skeleton-text skeleton" style={{ width: '70%', height: '1.5rem', marginBottom: '1rem' }}></div>
+                <div className="skeleton-text skeleton" style={{ width: '90%' }}></div>
+                <div className="skeleton-text skeleton" style={{ width: '40%' }}></div>
+                <div className="card-meta" style={{ borderTop: 'none' }}>
+                  <div className="skeleton-text skeleton" style={{ width: '80px', height: '2rem', borderRadius: '999px' }}></div>
+                  <div className="skeleton-text skeleton" style={{ width: '60px', height: '2rem', borderRadius: '999px' }}></div>
+                </div>
+                <div className="skeleton-text skeleton" style={{ width: '100%', height: '3rem', marginTop: 'auto' }}></div>
+              </div>
+            </div>
           ))}
         </div>
       ) : error ? (
