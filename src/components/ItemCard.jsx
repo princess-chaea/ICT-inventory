@@ -8,7 +8,7 @@ const ItemCard = ({ item, onClickApply }) => {
       </div>
       <div className="card-content">
         <h3 className="card-title">{item.name}</h3>
-        <p className="card-desc">{item.description}</p>
+        <p className="card-desc" style={{ whiteSpace: 'pre-wrap' }}>{item.description}</p>
         
         <div className="card-meta">
           <span className="deadline-badge">

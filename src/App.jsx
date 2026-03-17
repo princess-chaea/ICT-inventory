@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import Admin from './pages/Admin';
 import './index.css';
 
 // Toast Component
@@ -43,7 +44,7 @@ function App() {
       <div className="app">
         <Routes>
           <Route path="/" element={<Home showToast={showToast} />} />
-          {/* Admin page could be added here in the future */}
+          <Route path="/admin" element={<Admin showToast={showToast} />} />
         </Routes>
         <ToastContainer toasts={toasts} />
       </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import ItemCard from '../components/ItemCard';
 import ApplicationModal from '../components/ApplicationModal';
 import { getItems, submitApplication } from '../api';
@@ -63,9 +64,15 @@ const Home = ({ showToast }) => {
 
   return (
     <div className="container" style={{ animation: 'fadeIn 0.5s ease-out' }}>
-      <header className="header">
+      <header className="header" style={{ position: 'relative' }}>
         <h1>하주초 정보화 기자재 신청</h1>
         <p>필요한 기자재를 쉽게 신청하세요. 각 품목의 잔여 기한 및 현재 신청 건수를 확인하실 수 있습니다.</p>
+        <Link 
+          to="/admin" 
+          style={{ position: 'absolute', top: '1rem', right: '1rem', color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', textDecoration: 'underline' }}
+        >
+          관리자 메뉴
+        </Link>
       </header>
       
       {loading ? (

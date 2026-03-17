@@ -38,3 +38,36 @@ export const submitApplication = async (payload) => {
     throw error;
   }
 };
+
+export const getAdminData = async (itemName) => {
+  if (!GAS_URL) return { items: [] };
+
+  try {
+    const response = await fetch(`${GAS_URL}?action=getAdminData&itemName=${encodeURIComponent(itemName)}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("관리자 데이터 불러오기 에러:", error);
+    throw error;
+  }
+};
+
+export const addAdminItem = async (payload) => {
+  if (!GAS_URL) throw new Error("GAS Web App URL이 없습니다.");
+
+  try {
+    const response = await fetch(GAS_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify({ ...payload, action: 'addAdminItem' }),
+    });
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("기자재 등록 에러:", error);
+    throw error;
+  }
+};
