@@ -237,26 +237,26 @@ const Admin = ({ showToast }) => {
             {!loadingData && applications.length === 0 ? (
               <p style={{ color: 'var(--text-muted)' }}>신청 내역이 없습니다.</p>
             ) : (
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '700px' }}>
                 <thead>
                   <tr style={{ borderBottom: '2px solid var(--border)' }}>
-                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)' }}>신청일시</th>
-                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)' }}>학년/구분</th>
-                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)' }}>반/실</th>
-                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)' }}>교사명</th>
-                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)' }}>수량</th>
-                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)' }}>비고</th>
+                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '20%', whiteSpace: 'nowrap' }}>신청일시</th>
+                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '10%', whiteSpace: 'nowrap' }}>학년/구분</th>
+                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '10%', whiteSpace: 'nowrap' }}>반/실</th>
+                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '10%', whiteSpace: 'nowrap' }}>교사명</th>
+                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '5%', whiteSpace: 'nowrap' }}>수량</th>
+                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '45%' }}>비고</th>
                   </tr>
                 </thead>
                 <tbody>
                   {applications.map((app, idx) => (
                     <tr key={idx} style={{ borderBottom: '1px solid var(--border)', transition: 'background-color 0.2s' }}>
-                      <td style={{ padding: '0.75rem 0.5rem', fontSize: '0.9rem' }}>{new Date(app.timestamp).toLocaleString('ko-KR')}</td>
-                      <td style={{ padding: '0.75rem 0.5rem', fontWeight: '500' }}>{app.grade}</td>
-                      <td style={{ padding: '0.75rem 0.5rem' }}>{app.classNum}</td>
-                      <td style={{ padding: '0.75rem 0.5rem' }}>{app.name}</td>
+                      <td style={{ padding: '0.75rem 0.5rem', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>{new Date(app.timestamp).toLocaleString('ko-KR')}</td>
+                      <td style={{ padding: '0.75rem 0.5rem', fontWeight: '500', whiteSpace: 'nowrap' }}>{app.grade}</td>
+                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>{app.classNum}</td>
+                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>{app.name}</td>
                       <td style={{ padding: '0.75rem 0.5rem' }}>
-                        <span style={{ background: 'var(--primary)', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                        <span style={{ background: 'var(--primary)', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.8rem', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
                           {app.quantity}
                         </span>
                       </td>
