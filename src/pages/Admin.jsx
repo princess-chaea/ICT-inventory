@@ -47,8 +47,35 @@ const Admin = ({ showToast }) => {
       if (data && data.items) {
         // 학년, 반, 이름 순으로 정렬
         const sorted = data.items.sort((a, b) => {
-          if (a.grade !== b.grade) return String(a.grade).localeCompare(String(b.grade));
-          if (a.classNum !== b.classNum) return String(a.classNum).localeCompare(String(b.classNum));
+          const getSortValue = (val) => {
+            const match = String(val).match(/^(\d+)/);
+            if (match) return { isNum: true, val: parseInt(match[1]) };
+            return { isNum: false, val: 999, original: String(val) };
+          };
+
+          const gradeA = getSortValue(a.grade);
+          const gradeB = getSortValue(b.grade);
+
+          // 학년 숫자 우선 (1-6)
+          if (gradeA.isNum && !gradeB.isNum) return -1;
+          if (!gradeA.isNum && gradeB.isNum) return 1;
+          if (gradeA.val !== gradeB.val) return gradeA.val - gradeB.val;
+          if (!gradeA.isNum && !gradeB.isNum) {
+            const cmp = gradeA.original.localeCompare(gradeB.original);
+            if (cmp !== 0) return cmp;
+          }
+
+          // 학년이 같으면 반 정렬
+          const classA = getSortValue(a.classNum);
+          const classB = getSortValue(b.classNum);
+          if (classA.isNum && !classB.isNum) return -1;
+          if (!classA.isNum && classB.isNum) return 1;
+          if (classA.val !== classB.val) return classA.val - classB.val;
+          
+          const classCmp = String(a.classNum).localeCompare(String(b.classNum));
+          if (classCmp !== 0) return classCmp;
+
+          // 이름 정렬
           return String(a.name).localeCompare(String(b.name));
         });
         setApplications(sorted);
@@ -241,9 +268,9 @@ const Admin = ({ showToast }) => {
                 <thead>
                   <tr style={{ borderBottom: '2px solid var(--border)' }}>
                     <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '20%', whiteSpace: 'nowrap' }}>신청일시</th>
-                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '10%', whiteSpace: 'nowrap' }}>학년/구분</th>
-                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '10%', whiteSpace: 'nowrap' }}>반/실</th>
-                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '10%', whiteSpace: 'nowrap' }}>교사명</th>
+                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '10%', whiteSpace: 'nowrap', textAlign: 'center' }}>학년/구분</th>
+                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '10%', whiteSpace: 'nowrap', textAlign: 'center' }}>반/실</th>
+                    <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '10%', whiteSpace: 'nowrap', textAlign: 'center' }}>교사명</th>
                     <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '5%', whiteSpace: 'nowrap' }}>수량</th>
                     <th style={{ padding: '0.75rem 0.5rem', color: 'var(--text-muted)', width: '45%' }}>비고</th>
                   </tr>
@@ -252,9 +279,9 @@ const Admin = ({ showToast }) => {
                   {applications.map((app, idx) => (
                     <tr key={idx} style={{ borderBottom: '1px solid var(--border)', transition: 'background-color 0.2s' }}>
                       <td style={{ padding: '0.75rem 0.5rem', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>{new Date(app.timestamp).toLocaleString('ko-KR')}</td>
-                      <td style={{ padding: '0.75rem 0.5rem', fontWeight: '500', whiteSpace: 'nowrap' }}>{app.grade}</td>
-                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>{app.classNum}</td>
-                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>{app.name}</td>
+                      <td style={{ padding: '0.75rem 0.5rem', fontWeight: '500', whiteSpace: 'nowrap', textAlign: 'center' }}>{app.grade}</td>
+                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap', textAlign: 'center' }}>{app.classNum}</td>
+                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap', textAlign: 'center' }}>{app.name}</td>
                       <td style={{ padding: '0.75rem 0.5rem' }}>
                         <span style={{ background: 'var(--primary)', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.8rem', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
                           {app.quantity}
